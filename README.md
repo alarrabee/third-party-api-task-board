@@ -33,8 +33,17 @@ THEN the saved tasks persist
 ```
 
 ## Website
+(https://alarrabee.github.io/third-party-api-task-board/)
 
-## Screenshot
+## Page Functionality
+
+## Clicking the Add Task button opens a pop up where the user can input task details
+![image](https://github.com/alarrabee/third-party-api-task-board/assets/149320486/a3fb87b1-0b2d-4cea-a920-c3a75ba882fa)
+
+
+## Added tasks are displayed on the page and color coded to indicate the deadline status
+![image](https://github.com/alarrabee/third-party-api-task-board/assets/149320486/be4b61c5-12a6-4ea8-9cff-b2bad9e4e740)
+
 
 ## Improvements and Next Steps
 Add the ability to successfully drag and drop each task into the In Progress and Done columns. Currently the tasks are stuck in the To Do column. Update the unique task id generator to avoid generating duplicate task ids. Style the task cards to be more polished and professional. 
