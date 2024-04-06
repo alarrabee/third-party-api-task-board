@@ -7,35 +7,32 @@ const dueDateInput = $('#due-date-input');
 const descriptionInput = $('#description-input');
 const saveTaskBtn = $('#save-changes');
 
-//Saves to localStorage ----------------------------------------------
-function submitTask() {
+
+// Todo: create a function to generate a unique task id
+function generateTaskId() {
+  return (`task-${Math.floor(Math.random() * 101)}`);
+}
+//----------------------------------------------------------------
+
+// Todo: create a function to handle adding a new task
+//Takes user generated content from the form and saves to localStorage when the save changes button is clicked
+function handleAddTask() {
     let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
     const formContent = {
+        taskID: generateTaskId(),
         taskInput: $('#task-input').val(),
         dueDateInput: $('#due-date-input').val(),
         descriptionInput: $('#description-input').val()
     }
 
     taskList.push(formContent);
-
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
-//-----------------------------------------------------------------
 
-// Todo: create a function to handle adding a new task
-function handleAddTask(event){ 
-    submitTask();
-}
-  
 $('#save-changes').on('click', handleAddTask);
 //-----------------------------------------------------------------
 
-// Todo: create a function to generate a unique task id
-function generateTaskId() {
-
-}
-//----------------------------------------------------------------
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {  
@@ -46,10 +43,11 @@ function createTaskCard(task) {
     taskCard.append($('<p>').text('Task: ' + task.taskInput));
     taskCard.append($('<p>').text('Due Date: ' + task.dueDateInput));
     taskCard.append($('<p>').text('Description: ' + task.descriptionInput));
-    taskCard.append('<button class="btn btn-danger btn-small delete-item-btn">Remove</button>');
+    taskCard.append('<button class="btn btn-danger btn-small delete-item-btn" data-task-id="' + task.taskID + '">Remove</button>'); //Add data-task-id attribute
   
     return taskCard;
   }
+
 //-----------------------------------------------------------------
 
 // Todo: create a function to render the task list and make cards draggable
@@ -59,8 +57,7 @@ function renderTaskList() {
   
     taskList.forEach(function(task) {
       const card = createTaskCard(task).addClass('task ui-widget-content draggable');
-  
-      todoCards.append(card);
+      todoCards.append(card);  
 
       $('.draggable').draggable({   // https://api.jqueryui.com/draggable/
         revert: true               // Revert card to its original position if not dropped on a droppable area
@@ -70,10 +67,11 @@ function renderTaskList() {
 }
 
 renderTaskList();
+
 //-------------------------------------------------------------------
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
+function handleDeleteTask(event) {
 
 }
 
