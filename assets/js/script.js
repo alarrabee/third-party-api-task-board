@@ -45,7 +45,23 @@ function createTaskCard(task) {
     taskCard.append($('<p>').text('Description: ' + task.descriptionInput));
     taskCard.append('<button class="btn btn-danger btn-small delete-item-btn" data-task-id="' + task.taskID + '">Remove</button>'); //Add data-task-id attribute
   
+
+    //due dates
+    const currentDate = dayjs();
+    const dueDate = dayjs(task.dueDateInput);
+    const dayDifference = dueDate.diff(currentDate, 'day');
+
+    // Set border color based on deadline status
+    if (dayDifference < 0) {
+        taskCard.css('border-color', 'red'); // Past due
+    } else if (dayDifference <= 3) {
+        taskCard.css('border-color', 'yellow'); // Due within 3 days
+    } else {
+        taskCard.css('border-color', 'green'); // More than 3 days from due date
+    }
+
     return taskCard;
+    
   }
 
 //-----------------------------------------------------------------
@@ -74,8 +90,8 @@ renderTaskList();
 //deletes task from page and localStorage when the delete button is clicked
 function handleDeleteTask(event) {
   $(this).parent("div").remove();
-  var taskId = $(this).data('task-id');
-  var taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+  let taskId = $(this).data('task-id');
+  let taskList = JSON.parse(localStorage.getItem('tasks')) || [];
   taskList = taskList.filter(task => task.taskID !== taskId);
   localStorage.setItem('tasks', JSON.stringify(taskList));
 }
