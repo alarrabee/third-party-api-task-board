@@ -30,7 +30,7 @@ function handleAddTask() {
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
 
-$('#save-changes').on('click', handleAddTask);
+
 //-----------------------------------------------------------------
 
 
@@ -54,10 +54,10 @@ function createTaskCard(task) {
     // Set border color based on deadline status
     if (dayDifference < 0) {
         taskCard.css('border-color', 'red'); // Past due
-    } else if (dayDifference <= 3) {
-        taskCard.css('border-color', 'yellow'); // Due within 3 days
+    } else if (dayDifference >= 2) {
+        taskCard.css('border-color', 'green'); // Due within 3 days
     } else {
-        taskCard.css('border-color', 'green'); // More than 3 days from due date
+        taskCard.css('border-color', 'yellow'); // More than 3 days from due date
     }
 
     return taskCard;
@@ -82,7 +82,6 @@ function renderTaskList() {
     });
 }
 
-renderTaskList();
 
 //-------------------------------------------------------------------
 
@@ -96,16 +95,21 @@ function handleDeleteTask(event) {
   localStorage.setItem('tasks', JSON.stringify(taskList));
 }
 
-cardBody.on("click", ".delete-item-btn", handleDeleteTask);
 //-------------------------------------------------------------------
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+  $('.droppable').droppable({
+    accept: '.draggable' // Only accept elements with the draggable class
+  });
 }
+//-------------------------------------------------------------------
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
   $( "#datepicker" ).datepicker(); // Make the due date field a date picker
+  $('#save-changes').on('click', handleAddTask); // Saves tasks
+  cardBody.on("click", ".delete-item-btn", handleDeleteTask);  //deletes tasks
+  renderTaskList();
 });
 

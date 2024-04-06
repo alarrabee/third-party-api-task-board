@@ -15,3 +15,6 @@ body {
     cursor: grab;
   }
   
+  .ui-draggable {
+    z-index:1;
+    }
