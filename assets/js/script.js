@@ -6,7 +6,7 @@ const taskInput = $('#task-input');
 const dueDateInput = $('#due-date-input');
 const descriptionInput = $('#description-input');
 const saveTaskBtn = $('#save-changes');
-
+const cardBody = $('.card-body');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -71,9 +71,17 @@ renderTaskList();
 //-------------------------------------------------------------------
 
 // Todo: create a function to handle deleting a task
+//deletes task from page and localStorage when the delete button is clicked
 function handleDeleteTask(event) {
-
+  $(this).parent("div").remove();
+  var taskId = $(this).data('task-id');
+  var taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+  taskList = taskList.filter(task => task.taskID !== taskId);
+  localStorage.setItem('tasks', JSON.stringify(taskList));
 }
+
+cardBody.on("click", ".delete-item-btn", handleDeleteTask);
+//-------------------------------------------------------------------
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
@@ -84,3 +92,4 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
