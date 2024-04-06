@@ -21,31 +21,51 @@ function submitTask() {
 
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
+//-----------------------------------------------------------------
 
-// Todo: create a function to handle adding a new task-------------
+// Todo: create a function to handle adding a new task
 function handleAddTask(event){ 
     submitTask();
 }
   
 $('#save-changes').on('click', handleAddTask);
-
+//-----------------------------------------------------------------
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
 
 }
+//----------------------------------------------------------------
 
 // Todo: create a function to create a task card
-function createTaskCard(task) {
+function createTaskCard(task) {  
+    const taskCard = $('<div>');
+    taskCard.css({'border': 'solid black', 'margin': '10px',});
 
-}
+  
+    taskCard.append($('<p>').text('Task: ' + task.taskInput));
+    taskCard.append($('<p>').text('Due Date: ' + task.dueDateInput));
+    taskCard.append($('<p>').text('Description: ' + task.descriptionInput));
+    taskCard.append('<button class="btn btn-danger btn-small delete-item-btn">Remove</button>');
+  
+    return taskCard;
+  }
+//-----------------------------------------------------------------
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-
+    let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+    const todoCards = $('#todo-cards');
+  
+    taskList.forEach(function(task) {
+      const card = createTaskCard(task);
+  
+      todoCards.append(card);
+    });
 }
 
-
+renderTaskList();
+//-------------------------------------------------------------------
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
