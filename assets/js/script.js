@@ -58,9 +58,14 @@ function renderTaskList() {
     const todoCards = $('#todo-cards');
   
     taskList.forEach(function(task) {
-      const card = createTaskCard(task);
+      const card = createTaskCard(task).addClass('task ui-widget-content draggable');
   
       todoCards.append(card);
+
+      $('.draggable').draggable({   // https://api.jqueryui.com/draggable/
+        revert: true               // Revert card to its original position if not dropped on a droppable area
+      });
+      
     });
 }
 
