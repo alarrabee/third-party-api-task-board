@@ -1,6 +1,6 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+//let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 const taskInput = $('#task-input');
 const dueDateInput = $('#due-date-input');
@@ -22,7 +22,7 @@ function handleAddTask() {
     const formContent = {
         taskID: generateTaskId(),
         taskInput: $('#task-input').val(),
-        dueDateInput: $('#due-date-input').val(),
+        dueDateInput: $('#datepicker').val(),
         descriptionInput: $('#description-input').val()
     }
 
@@ -30,7 +30,7 @@ function handleAddTask() {
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
 
-$('#save-changes').on('click', handleAddTask);
+
 //-----------------------------------------------------------------
 
 
@@ -45,7 +45,23 @@ function createTaskCard(task) {
     taskCard.append($('<p>').text('Description: ' + task.descriptionInput));
     taskCard.append('<button class="btn btn-danger btn-small delete-item-btn" data-task-id="' + task.taskID + '">Remove</button>'); //Add data-task-id attribute
   
+
+    //due dates
+    const currentDate = dayjs();
+    const dueDate = dayjs(task.dueDateInput);
+    const dayDifference = dueDate.diff(currentDate, 'day');
+
+    // Set border color based on deadline status
+    if (dayDifference < 0) {
+        taskCard.css('border-color', 'red'); // Past due
+    } else if (dayDifference >= 2) {
+        taskCard.css('border-color', 'green'); // Due within 3 days
+    } else {
+        taskCard.css('border-color', 'yellow'); // More than 3 days from due date
+    }
+
     return taskCard;
+    
   }
 
 //-----------------------------------------------------------------
@@ -66,7 +82,6 @@ function renderTaskList() {
     });
 }
 
-renderTaskList();
 
 //-------------------------------------------------------------------
 
@@ -74,22 +89,27 @@ renderTaskList();
 //deletes task from page and localStorage when the delete button is clicked
 function handleDeleteTask(event) {
   $(this).parent("div").remove();
-  var taskId = $(this).data('task-id');
-  var taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+  let taskId = $(this).data('task-id');
+  let taskList = JSON.parse(localStorage.getItem('tasks')) || [];
   taskList = taskList.filter(task => task.taskID !== taskId);
   localStorage.setItem('tasks', JSON.stringify(taskList));
 }
 
-cardBody.on("click", ".delete-item-btn", handleDeleteTask);
 //-------------------------------------------------------------------
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+  $('.droppable').droppable({
+    accept: '.draggable' // Only accept elements with the draggable class
+  });
 }
+//-------------------------------------------------------------------
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-
+  $( "#datepicker" ).datepicker(); // Make the due date field a date picker
+  $('#save-changes').on('click', handleAddTask); // Saves tasks
+  cardBody.on("click", ".delete-item-btn", handleDeleteTask);  //deletes tasks
+  renderTaskList();
 });
 
