@@ -37,11 +37,11 @@ THEN the saved tasks persist
 
 ## Page Functionality
 
-## Clicking the Add Task button opens a pop up where the user can input task details
+### Clicking the Add Task button opens a pop up where the user can input task details
 ![image](https://github.com/alarrabee/third-party-api-task-board/assets/149320486/a3fb87b1-0b2d-4cea-a920-c3a75ba882fa)
 
 
-## Added tasks are displayed on the page and color coded to indicate the deadline status
+### Added tasks are displayed on the page and color coded to indicate the deadline status
 ![image](https://github.com/alarrabee/third-party-api-task-board/assets/149320486/be4b61c5-12a6-4ea8-9cff-b2bad9e4e740)
 
 
